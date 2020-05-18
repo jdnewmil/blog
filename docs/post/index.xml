@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Posts on Jeff Newmiller&#39;s Musings</title>
+    <link>/blog/post/</link>
+    <description>Recent content in Posts on Jeff Newmiller&#39;s Musings</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <copyright>Except where otherwise noted, content on this site is licensed under a [Creative Commons Attribution 4.0 International license](https://creativecommons.org/licenses/by-sa/4.0/).</copyright>
+    <lastBuildDate>Sun, 17 May 2020 00:00:00 +0000</lastBuildDate>
+    
+	<atom:link href="/blog/post/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>Inaugural Post</title>
+      <link>/blog/post/inaugural-post/</link>
+      <pubDate>Sun, 17 May 2020 00:00:00 +0000</pubDate>
+      
+      <guid>/blog/post/inaugural-post/</guid>
+      <description>I have been keeping a file of solutions to small data analysis problems I find on the internet on my computer, and thought it might be nice to be able to point people at them… which kind of leads to having a blog. You may find it dry reading if you are looking for juicy bits about my personal life though… I rarely feel the need to share in that way.</description>
+    </item>
+    
+  </channel>
+</rss>
