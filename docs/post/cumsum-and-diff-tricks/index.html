@@ -1,0 +1,631 @@
+<!DOCTYPE html>
+<html lang="en" >
+
+  <head>
+    <meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+<meta property="og:title" content="Cumsum and Diff Tricks" />
+<meta property="og:description" content="Cumsum and diff tricks" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="/blog/post/cumsum-and-diff-tricks/" />
+<meta property="article:published_time" content="2020-05-24T00:00:00+00:00" />
+<meta property="article:modified_time" content="2020-05-24T00:00:00+00:00" />
+
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="Cumsum and Diff Tricks"/>
+<meta name="twitter:description" content="Cumsum and diff tricks"/>
+<meta name="generator" content="Hugo 0.70.0" />
+
+
+    
+<script type="application/ld+json">
+{
+  "@context": "http://schema.org",
+  "@type": "BlogPosting",
+  "headline": "Cumsum and Diff Tricks",
+  "url": "/blog/post/cumsum-and-diff-tricks/",
+  "wordCount": "1153",
+  "datePublished": "2020-05-24T00:00:00+00:00",
+  "dateModified": "2020-05-24T00:00:00+00:00",
+  "author": {
+    "@type": "Person",
+    "name": "Jeff Newmiller"
+  },
+  "keywords": "R, data analysis",
+  "description": "Cumsum and diff tricks"
+}
+</script>
+
+
+
+    <link rel="canonical" href="/blog/post/cumsum-and-diff-tricks/">
+
+    <title>Cumsum and Diff Tricks | Jeff Newmiller&#39;s Musings</title>
+
+    
+    <!-- combined, minified CSS -->
+    
+    <link href="/blog/css/style.e408605af1290e616960aef7be39db8d54400ce717e8e4f12f733d8fb56d62ee.css" rel="stylesheet" integrity="sha256-5AhgWvEpDmFpYK73vjnbjVRADOcX6OTxL3M9j7VtYu4=" crossorigin="anonymous">
+    
+
+    <!-- minified Font Awesome for SVG icons -->
+    
+    <script defer src="/blog/js/fontawesome.min.16a86fa8fbdecc0f27392feecb61ee0803a507820bded359407103a49126b52c.js" integrity="sha256-FqhvqPvezA8nOS/uy2HuCAOlB4IL3tNZQHEDpJEmtSw=" crossorigin="anonymous"></script>
+
+    <!-- RSS 2.0 feed -->
+    
+
+    
+
+
+<link rel="stylesheet" href="/blog//assets/css/social-share-kit.css?v=1.0.15">
+
+<link rel="shortcut icon" type="image/png" href="/blog//assets/images/GoIcon_64x64.png">
+
+  </head>
+
+  <body>
+
+    
+    <div class="blog-masthead">
+      <div class="container">
+        <nav class="nav blog-nav">
+          <a class="nav-link " href="/blog/">Home</a>
+        </nav>
+      </div>
+    </div>
+    
+
+    
+    
+    <header class="blog-header">
+      <div class="container">
+        <h1 class="blog-title" dir="auto"><a href="/blog/" rel="home">Jeff Newmiller's Musings</a></h1>
+        <p class="lead blog-description" dir="auto">Random thoughts, mostly on data analysis with R and Python.</p>
+      </div>
+    </header>
+    
+    
+
+    
+    <div class="container">
+      <div class="row">
+        <div class="col-sm-8 blog-main">
+
+          
+
+
+<article class="blog-post">
+  <header>
+    <h2 class="blog-post-title" dir="auto"><a href="/blog/post/cumsum-and-diff-tricks/">Cumsum and Diff Tricks</a></h2>
+    <p class="blog-post-meta"><time datetime="2020-05-24T00:00:00Z">Sun May 24, 2020</time> by Jeff Newmiller in 
+<span class="fas fa-folder" aria-hidden="true"></span>&nbsp;<a href="/blog/categories/r/" rel="category tag">R</a>
+
+
+<span class="fas fa-tag" aria-hidden="true"></span>&nbsp;<a href="/blog/tags/data-analysis/" rel="tag">data analysis</a>
+
+</p>
+  </header>
+  
+<script src="/blog/rmarkdown-libs/kePrint/kePrint.js"></script>
+
+
+<p>images:
+- /2016/10/image.jpg</p>
+<p>There are many instances where you want to look for “trigger” status values in a table (data frame) that mark the beginning of a sequence of records that need to be grouped together. Naturally, there are usually corresponding “trigger” values that mark the end of such a group of records. The obvious solution for automating the identification of such groups is to write a while or for loop that sequentially examines each record and uses <code>if-else</code> logic to generate a new column in the table that indicates the assignment of each record to an appropriate group. However, in many (but not all) cases such logic can instead be implemented using fast-running vectorized functions by creating a sequence of a few column-wise vectors that lead to generation of such a grouping column using simpler and faster basic operations.</p>
+<p>Note that these techniques can be applied in Python as well, using numpy/pandas functions.</p>
+<pre class="r"><code>suppressPackageStartupMessages({
+  library(dplyr)
+  library(ggplot2)
+  library(kableExtra)
+})
+theme_set(theme_minimal())</code></pre>
+<div id="the-idea" class="section level2">
+<h2>The idea</h2>
+<p>If we have a timeline, or any real number line, we may be able to figure out when certain things happened, but it may be useful to lump records following those events together.</p>
+<pre class="r"><code>dta1 &lt;- read.table( text=
+&quot;X  Start
+ 1  1
+ 2  0
+ 3  1
+ 4  0
+ 5  0
+ 6  0
+ 7  1
+ 8  0
+&quot;,header=TRUE,as.is=TRUE)
+dta1</code></pre>
+<pre><code>##   X Start
+## 1 1     1
+## 2 2     0
+## 3 3     1
+## 4 4     0
+## 5 5     0
+## 6 6     0
+## 7 7     1
+## 8 8     0</code></pre>
+<p>Here we have some events at 1, 3, and 7.</p>
+<p><img src="/blog/post/2020-05-24-cumsum-and-diff-tricks_files/figure-html/unnamed-chunk-3-1.png" width="672" /></p>
+<p>But we would like to group the records together:</p>
+<table>
+<thead>
+<tr>
+<th style="text-align:right;">
+X
+</th>
+<th style="text-align:right;">
+Start
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:right;background-color: rgba(68, 1, 84, 0.4) !important;">
+1
+</td>
+<td style="text-align:right;background-color: rgba(68, 1, 84, 0.4) !important;width: 0.5in; ">
+1
+</td>
+</tr>
+<tr>
+<td style="text-align:right;background-color: rgba(68, 1, 84, 0.4) !important;">
+2
+</td>
+<td style="text-align:right;background-color: rgba(68, 1, 84, 0.4) !important;width: 0.5in; ">
+0
+</td>
+</tr>
+<tr>
+<td style="text-align:right;background-color: rgba(33, 144, 140, 0.4) !important;">
+3
+</td>
+<td style="text-align:right;background-color: rgba(33, 144, 140, 0.4) !important;width: 0.5in; ">
+1
+</td>
+</tr>
+<tr>
+<td style="text-align:right;background-color: rgba(33, 144, 140, 0.4) !important;">
+4
+</td>
+<td style="text-align:right;background-color: rgba(33, 144, 140, 0.4) !important;width: 0.5in; ">
+0
+</td>
+</tr>
+<tr>
+<td style="text-align:right;background-color: rgba(33, 144, 140, 0.4) !important;">
+5
+</td>
+<td style="text-align:right;background-color: rgba(33, 144, 140, 0.4) !important;width: 0.5in; ">
+0
+</td>
+</tr>
+<tr>
+<td style="text-align:right;background-color: rgba(33, 144, 140, 0.4) !important;">
+6
+</td>
+<td style="text-align:right;background-color: rgba(33, 144, 140, 0.4) !important;width: 0.5in; ">
+0
+</td>
+</tr>
+<tr>
+<td style="text-align:right;background-color: rgba(253, 231, 37, 0.4) !important;">
+7
+</td>
+<td style="text-align:right;background-color: rgba(253, 231, 37, 0.4) !important;width: 0.5in; ">
+1
+</td>
+</tr>
+<tr>
+<td style="text-align:right;background-color: rgba(253, 231, 37, 0.4) !important;">
+8
+</td>
+<td style="text-align:right;background-color: rgba(253, 231, 37, 0.4) !important;width: 0.5in; ">
+0
+</td>
+</tr>
+</tbody>
+</table>
+<p>The trick to marking these records as belonging together is to use <code>cumsum</code> on the <code>Start</code> events</p>
+<pre class="r"><code>dta1$G &lt;- cumsum( dta1$Start )</code></pre>
+<p><img src="/blog/post/2020-05-24-cumsum-and-diff-tricks_files/figure-html/unnamed-chunk-6-1.png" width="672" /></p>
+<table>
+<thead>
+<tr>
+<th style="text-align:right;">
+X
+</th>
+<th style="text-align:right;">
+Start
+</th>
+<th style="text-align:right;">
+G
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:right;background-color: rgba(68, 1, 84, 0.4) !important;">
+1
+</td>
+<td style="text-align:right;background-color: rgba(68, 1, 84, 0.4) !important;width: 0.5in; ">
+1
+</td>
+<td style="text-align:right;background-color: rgba(68, 1, 84, 0.4) !important;width: 0.25in; ">
+1
+</td>
+</tr>
+<tr>
+<td style="text-align:right;background-color: rgba(68, 1, 84, 0.4) !important;">
+2
+</td>
+<td style="text-align:right;background-color: rgba(68, 1, 84, 0.4) !important;width: 0.5in; ">
+0
+</td>
+<td style="text-align:right;background-color: rgba(68, 1, 84, 0.4) !important;width: 0.25in; ">
+1
+</td>
+</tr>
+<tr>
+<td style="text-align:right;background-color: rgba(33, 144, 140, 0.4) !important;">
+3
+</td>
+<td style="text-align:right;background-color: rgba(33, 144, 140, 0.4) !important;width: 0.5in; ">
+1
+</td>
+<td style="text-align:right;background-color: rgba(33, 144, 140, 0.4) !important;width: 0.25in; ">
+2
+</td>
+</tr>
+<tr>
+<td style="text-align:right;background-color: rgba(33, 144, 140, 0.4) !important;">
+4
+</td>
+<td style="text-align:right;background-color: rgba(33, 144, 140, 0.4) !important;width: 0.5in; ">
+0
+</td>
+<td style="text-align:right;background-color: rgba(33, 144, 140, 0.4) !important;width: 0.25in; ">
+2
+</td>
+</tr>
+<tr>
+<td style="text-align:right;background-color: rgba(33, 144, 140, 0.4) !important;">
+5
+</td>
+<td style="text-align:right;background-color: rgba(33, 144, 140, 0.4) !important;width: 0.5in; ">
+0
+</td>
+<td style="text-align:right;background-color: rgba(33, 144, 140, 0.4) !important;width: 0.25in; ">
+2
+</td>
+</tr>
+<tr>
+<td style="text-align:right;background-color: rgba(33, 144, 140, 0.4) !important;">
+6
+</td>
+<td style="text-align:right;background-color: rgba(33, 144, 140, 0.4) !important;width: 0.5in; ">
+0
+</td>
+<td style="text-align:right;background-color: rgba(33, 144, 140, 0.4) !important;width: 0.25in; ">
+2
+</td>
+</tr>
+<tr>
+<td style="text-align:right;background-color: rgba(253, 231, 37, 0.4) !important;">
+7
+</td>
+<td style="text-align:right;background-color: rgba(253, 231, 37, 0.4) !important;width: 0.5in; ">
+1
+</td>
+<td style="text-align:right;background-color: rgba(253, 231, 37, 0.4) !important;width: 0.25in; ">
+3
+</td>
+</tr>
+<tr>
+<td style="text-align:right;background-color: rgba(253, 231, 37, 0.4) !important;">
+8
+</td>
+<td style="text-align:right;background-color: rgba(253, 231, 37, 0.4) !important;width: 0.5in; ">
+0
+</td>
+<td style="text-align:right;background-color: rgba(253, 231, 37, 0.4) !important;width: 0.25in; ">
+3
+</td>
+</tr>
+</tbody>
+</table>
+<p>The <code>G</code> column can be used in grouped calculations to identify each group of records.</p>
+</div>
+<div id="intervals" class="section level2">
+<h2>Intervals</h2>
+<p>Now we look at a more involved extension of this idea: collapsing records that redundantly specify overlapping intervals.</p>
+<pre class="r"><code>dta2 &lt;- read.table( text=
+&quot;Label Start End
+A      5     8
+B      2     6
+C      9     11
+D      14    17
+&quot;,header=TRUE)
+dta2</code></pre>
+<pre><code>##   Label Start End
+## 1     A     5   8
+## 2     B     2   6
+## 3     C     9  11
+## 4     D    14  17</code></pre>
+<p>As we see below, there are parts of the number line that are not identified by these <code>Start</code>/<code>End</code> pairs (red bars), and there are individual intervals shown by the black bars. Intervals <code>A</code> and <code>B</code> overlap, so the goal is to represent them by one black bar.</p>
+<p><img src="/blog/post/2020-05-24-cumsum-and-diff-tricks_files/figure-html/unnamed-chunk-9-1.png" width="672" /></p>
+<p>We start by sorting by beginning of interval (<code>Start</code>).</p>
+<pre><code>##   Label Start End
+## 1     B     2   6
+## 2     A     5   8
+## 3     C     9  11
+## 4     D    14  17</code></pre>
+<p><img src="/blog/post/2020-05-24-cumsum-and-diff-tricks_files/figure-html/unnamed-chunk-11-1.png" width="672" /></p>
+<p>Next we notice that we can subtract the red <code>End</code> values from the yellow <code>Start</code> values to figure out how big the “hole” is preceding each <code>Start</code> value. Notice that the hole before the first interval is infinitely large.</p>
+<table class="table" style="width: auto !important; margin-left: auto; margin-right: auto;">
+<thead>
+<tr>
+<th style="text-align:left;">
+Label
+</th>
+<th style="text-align:left;">
+Start
+</th>
+<th style="text-align:left;">
+End
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;width: 0.5in; ">
+B
+</td>
+<td style="text-align:left;width: 0.5in; ">
+<span style="     border-radius: 4px; padding-right: 4px; padding-left: 4px; background-color: white !important;">2</span>
+</td>
+<td style="text-align:left;width: 0.5in; ">
+<span style="     border-radius: 4px; padding-right: 4px; padding-left: 4px; background-color: red !important;">6</span>
+</td>
+</tr>
+<tr>
+<td style="text-align:left;width: 0.5in; ">
+A
+</td>
+<td style="text-align:left;width: 0.5in; ">
+<span style="     border-radius: 4px; padding-right: 4px; padding-left: 4px; background-color: yellow !important;">5</span>
+</td>
+<td style="text-align:left;width: 0.5in; ">
+<span style="     border-radius: 4px; padding-right: 4px; padding-left: 4px; background-color: red !important;">8</span>
+</td>
+</tr>
+<tr>
+<td style="text-align:left;width: 0.5in; ">
+C
+</td>
+<td style="text-align:left;width: 0.5in; ">
+<span style="     border-radius: 4px; padding-right: 4px; padding-left: 4px; background-color: yellow !important;">9</span>
+</td>
+<td style="text-align:left;width: 0.5in; ">
+<span style="     border-radius: 4px; padding-right: 4px; padding-left: 4px; background-color: red !important;">11</span>
+</td>
+</tr>
+<tr>
+<td style="text-align:left;width: 0.5in; ">
+D
+</td>
+<td style="text-align:left;width: 0.5in; ">
+<span style="     border-radius: 4px; padding-right: 4px; padding-left: 4px; background-color: yellow !important;">14</span>
+</td>
+<td style="text-align:left;width: 0.5in; ">
+<span style="     border-radius: 4px; padding-right: 4px; padding-left: 4px; background-color: white !important;">17</span>
+</td>
+</tr>
+</tbody>
+</table>
+<pre class="r"><code>dta2c &lt;- (   dta2b
+         %&gt;% mutate( hole = c( Inf, Start[-1]-End[-n()] ) )
+         )
+dta2c</code></pre>
+<pre><code>##   Label Start End hole
+## 1     B     2   6  Inf
+## 2     A     5   8   -1
+## 3     C     9  11    1
+## 4     D    14  17    3</code></pre>
+<p>Next we identify events… which intervals have holes greater or equal to zero in front of them?</p>
+<pre class="r"><code>dta2d &lt;- (   dta2c
+         %&gt;% mutate( group_start = ( 0 &lt;= hole ) )
+         )
+dta2d</code></pre>
+<pre><code>##   Label Start End hole group_start
+## 1     B     2   6  Inf        TRUE
+## 2     A     5   8   -1       FALSE
+## 3     C     9  11    1        TRUE
+## 4     D    14  17    3        TRUE</code></pre>
+<p>Now that we have events identified, we can use <code>cumsum</code> to identify records that belong together:</p>
+<pre class="r"><code>dta2e &lt;- (   dta2d
+         %&gt;% mutate( group = cumsum( group_start ) )
+         )
+dta2e</code></pre>
+<pre><code>##   Label Start End hole group_start group
+## 1     B     2   6  Inf        TRUE     1
+## 2     A     5   8   -1       FALSE     1
+## 3     C     9  11    1        TRUE     2
+## 4     D    14  17    3        TRUE     3</code></pre>
+<p>With the <code>group</code> column defined, the minimum <code>Start</code> and the maximum <code>End</code> in each <code>group</code> value can be used to form a single interval record.</p>
+<pre class="r"><code>dta2f &lt;- (   dta2e
+         %&gt;% group_by( group )
+         %&gt;% summarise( Start = min( Start )
+                      , End = max( End )
+                      )
+         %&gt;% ungroup()
+         )
+dta2f</code></pre>
+<pre><code>## # A tibble: 3 x 3
+##   group Start   End
+##   &lt;int&gt; &lt;int&gt; &lt;int&gt;
+## 1     1     2     8
+## 2     2     9    11
+## 3     3    14    17</code></pre>
+<p><img src="/blog/post/2020-05-24-cumsum-and-diff-tricks_files/figure-html/unnamed-chunk-17-1.png" width="672" /></p>
+<p>With <code>dplyr</code> this series of operations can be piped together instead of built incrementally as we did above to show the intermediate results:</p>
+<pre class="r"><code>dta2g &lt;- (   dta2
+         %&gt;% arrange( Start )
+         %&gt;% mutate( hole = c( Inf, Start[-1]-End[-n()] )
+                   , group = cumsum( 0 &lt;= hole )
+                   )
+         %&gt;% group_by( group )
+         %&gt;% summarise( Start = min( Start )
+                      , End = max( End )
+                      )
+         %&gt;% ungroup()
+         )
+dta2g</code></pre>
+<pre><code>## # A tibble: 3 x 3
+##   group Start   End
+##   &lt;int&gt; &lt;int&gt; &lt;int&gt;
+## 1     1     2     8
+## 2     2     9    11
+## 3     3    14    17</code></pre>
+</div>
+<div id="one-day-max-separation" class="section level2">
+<h2>One day (max) separation</h2>
+<pre class="r"><code>library(dplyr)
+
+dta &lt;- read.csv(text=
+&quot;id|start|end
+1|2015-08-01|2015-12-31
+1|2016-01-01|2016-12-31
+1|2017-01-01|2017-05-08
+2|2014-08-12|2014-12-31
+2|2015-01-01|2015-07-23
+2|2016-01-12|2016-12-31
+2|2017-01-01|2017-08-22
+&quot;,sep=&quot;|&quot;,as.is=TRUE
+,colClasses=c(&quot;numeric&quot;,&quot;Date&quot;,&quot;Date&quot;))</code></pre>
+<pre class="r"><code>(   dta
+%&gt;% arrange( id, start )
+%&gt;% group_by( id )
+%&gt;% mutate( hole = c( Inf
+                    , as.numeric( start[-1]-end[-n()]
+                                , units=&quot;days&quot;
+                                )
+                    )
+          , gp = cumsum( 1 &lt; hole )
+          )
+%&gt;% ungroup
+# %&gt;% group_by( id, gp )
+# %&gt;% summarise( start = min( start )
+#              , end = max( end )
+#              )
+)</code></pre>
+<pre><code>## # A tibble: 7 x 5
+##      id start      end         hole    gp
+##   &lt;dbl&gt; &lt;date&gt;     &lt;date&gt;     &lt;dbl&gt; &lt;int&gt;
+## 1     1 2015-08-01 2015-12-31   Inf     1
+## 2     1 2016-01-01 2016-12-31     1     1
+## 3     1 2017-01-01 2017-05-08     1     1
+## 4     2 2014-08-12 2014-12-31   Inf     1
+## 5     2 2015-01-01 2015-07-23     1     1
+## 6     2 2016-01-12 2016-12-31   173     2
+## 7     2 2017-01-01 2017-08-22     1     2</code></pre>
+<pre class="r"><code>(   dta
+%&gt;% arrange( id, start )
+%&gt;% group_by( id )
+%&gt;% mutate( hole = c( Inf
+                    , as.numeric( start[-1]-end[-n()]
+                                , units=&quot;days&quot;
+                                )
+                    )
+          , gp = cumsum( 1 &lt; hole )
+          )
+%&gt;% ungroup
+%&gt;% group_by( id, gp )
+%&gt;% summarise( start = min( start )
+             , end = max( end ))
+)</code></pre>
+<pre><code>## # A tibble: 3 x 4
+## # Groups:   id [2]
+##      id    gp start      end       
+##   &lt;dbl&gt; &lt;int&gt; &lt;date&gt;     &lt;date&gt;    
+## 1     1     1 2015-08-01 2017-05-08
+## 2     2     1 2014-08-12 2015-07-23
+## 3     2     2 2016-01-12 2017-08-22</code></pre>
+</div>
+
+
+  
+
+  
+  <hr>
+  <footer>
+
+  
+    <section>
+    <h4>Share</h4>
+    <nav class="nav sharing-icons">
+
+
+      <div class="ssk-group">
+        <a href="mailto:?subject=Check%20out%20Cumsum%20and%20Diff%20Tricks.&body=%2fblog%2fpost%2fcumsum-and-diff-tricks%2f" class="ssk ssk-email" title="Share by Email"></a>
+      </div>
+ 
+    </nav>
+  </section>
+
+  
+
+  
+  </footer>
+  
+
+</article> 
+
+
+
+        </div> <!-- /.blog-main -->
+
+        <aside class="col-sm-3 ml-auto blog-sidebar">
+  
+
+  
+
+  
+  <section class="sidebar-module">
+    <h4>Links</h4>
+    <ol class="list-unstyled">
+      
+      <li><a href="/blog/about/">About</a></li>
+      
+      <li><a href="https://github.com/jdnewmil">GitHub</a></li>
+      
+      <li><a href="https://stat.ethz.ch/mailman/listinfo/r-help">R-help (see Archive)</a></li>
+      
+      <li><a href="https://www.reddit.com/user/jdnewmil/">Reddit</a></li>
+      
+    </ol>
+  </section>
+  
+</aside>
+
+
+      </div> <!-- /.row -->
+    </div> <!-- /.container -->
+    
+
+    
+    <footer class="blog-footer">
+      <p dir="auto">
+      
+      Except where otherwise noted, content on this site is licensed under a <a href="https://creativecommons.org/licenses/by-sa/4.0/">Creative Commons Attribution 4.0 International license</a>.
+      
+      </p>
+      <p>
+      <a href="#">Back to top</a>
+      </p>
+    </footer>
+    
+
+  </body>
+
+</html>

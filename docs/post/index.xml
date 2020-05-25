@@ -7,10 +7,20 @@
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
     <copyright>Except where otherwise noted, content on this site is licensed under a [Creative Commons Attribution 4.0 International license](https://creativecommons.org/licenses/by-sa/4.0/).</copyright>
-    <lastBuildDate>Sun, 17 May 2020 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Sun, 24 May 2020 00:00:00 +0000</lastBuildDate>
     
 	<atom:link href="/blog/post/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>Cumsum and Diff Tricks</title>
+      <link>/blog/post/cumsum-and-diff-tricks/</link>
+      <pubDate>Sun, 24 May 2020 00:00:00 +0000</pubDate>
+      
+      <guid>/blog/post/cumsum-and-diff-tricks/</guid>
+      <description>images: - /2016/10/image.jpg
+There are many instances where you want to look for “trigger” status values in a table (data frame) that mark the beginning of a sequence of records that need to be grouped together. Naturally, there are usually corresponding “trigger” values that mark the end of such a group of records.</description>
+    </item>
     
     <item>
       <title>Inaugural Post</title>
