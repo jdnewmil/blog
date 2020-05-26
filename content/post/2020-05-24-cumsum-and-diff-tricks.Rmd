@@ -111,6 +111,8 @@ ggplot(dta1, aes(x=X,y=G)) +
 
 The `G` column can be used in grouped calculations to identify each group of records.
 
+Note that `diff` and `cumsum` are useful in this way when the data records are in increasing "time" order. It may be necessary to sort your data before applying these tools to it.
+
 # Intervals
 
 Now we look at a more involved extension of this idea: collapsing records that redundantly specify overlapping intervals.
