@@ -3,6 +3,16 @@
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   
   <url>
+    <loc>/blog/</loc>
+    <lastmod>2020-05-25T12:47:53-07:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>/blog/terms/</loc>
+    <lastmod>2020-05-25T12:47:53-07:00</lastmod>
+  </url>
+  
+  <url>
     <loc>/blog/categories/</loc>
     <lastmod>2020-05-24T00:00:00+00:00</lastmod>
   </url>
@@ -13,7 +23,7 @@
   </url>
   
   <url>
-    <loc>/blog/tags/data-analysis/</loc>
+    <loc>/blog/tag/data-analysis/</loc>
     <lastmod>2020-05-24T00:00:00+00:00</lastmod>
   </url>
   
@@ -23,7 +33,7 @@
   </url>
   
   <url>
-    <loc>/blog/categories/r/</loc>
+    <loc>/blog/category/r/</loc>
     <lastmod>2020-05-24T00:00:00+00:00</lastmod>
   </url>
   
@@ -33,7 +43,7 @@
   </url>
   
   <url>
-    <loc>/blog/tags/development/</loc>
+    <loc>/blog/tag/development/</loc>
     <lastmod>2020-05-17T00:00:00+00:00</lastmod>
   </url>
   
@@ -48,8 +58,32 @@
   </url>
   
   <url>
-    <loc>/blog/</loc>
-    <lastmod>2020-05-16T15:48:40-07:00</lastmod>
+    <loc>/blog/privacy/</loc>
+    <lastmod>2018-06-28T00:00:00+01:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>/blog/authors/</loc>
+  </url>
+  
+  <url>
+    <loc>/blog/courses/</loc>
+  </url>
+  
+  <url>
+    <loc>/blog/author/jeff-newmiller/</loc>
+  </url>
+  
+  <url>
+    <loc>/blog/publication_types/</loc>
+  </url>
+  
+  <url>
+    <loc>/blog/publication/</loc>
+  </url>
+  
+  <url>
+    <loc>/blog/talk/</loc>
   </url>
   
 </urlset>

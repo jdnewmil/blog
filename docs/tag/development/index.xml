@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>development | Musings</title>
+    <link>/blog/tag/development/</link>
+      <atom:link href="/blog/tag/development/index.xml" rel="self" type="application/rss+xml" />
+    <description>development</description>
+    <generator>Source Themes Academic (https://sourcethemes.com/academic/)</generator><language>en-us</language><lastBuildDate>Sun, 17 May 2020 00:00:00 +0000</lastBuildDate>
+    <image>
+      <url>/blog/images/icon_hu0b7a4cb9992c9ac0e91bd28ffd38dd00_9727_512x512_fill_lanczos_center_2.png</url>
+      <title>development</title>
+      <link>/blog/tag/development/</link>
+    </image>
+    
+    <item>
+      <title>Inaugural Post</title>
+      <link>/blog/post/inaugural-post/</link>
+      <pubDate>Sun, 17 May 2020 00:00:00 +0000</pubDate>
+      <guid>/blog/post/inaugural-post/</guid>
+      <description>
+
+
+&lt;p&gt;I have been keeping a file of solutions to small data analysis problems I find on the internet on my computer, and thought it might be nice to be able to point people at them… which kind of leads to having a blog. You may find it dry reading if you are looking for juicy bits about my personal life though… I rarely feel the need to share in that way.&lt;/p&gt;
+&lt;p&gt;I will lead off this time with a link to my pre-blog online notes: [&lt;a href=&#34;https://jdnewmil.github.io/&#34; class=&#34;uri&#34;&gt;https://jdnewmil.github.io/&lt;/a&gt;].&lt;/p&gt;
+</description>
+    </item>
+    
+  </channel>
+</rss>

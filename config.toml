@@ -4,7 +4,7 @@ baseurl = "https://jdnewmil.github.io/blog/"
 publishDir = "docs"
 languageCode = "en-us"
 title = "Jeff Newmiller's Musings"
-theme = "hugo-theme-bootstrap4-blog"
+theme = "hugo-academic"
 # number of posts to show on home/category/tag pages (Default: 10)
 paginate = 5
 # number of words to use for summary on home/category/tag pages (Default: 70)

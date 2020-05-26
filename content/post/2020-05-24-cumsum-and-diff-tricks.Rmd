@@ -8,15 +8,20 @@ categories:
 tags:
   - data analysis
 description: 'Cumsum and diff tricks'
-
+output:
+  blogdown::html_page:
+    toc: true
+#images:
+#  - /2016/10/image.jpg
 ---
 
-images:
-  - /2016/10/image.jpg
+There are many instances where you want to look for "trigger" events in a table (data frame) that mark the beginning of a sequence of records that need to be grouped together. While in some cases the end of such a sequence may be defined by the next similar event, in some cases there may be different "trigger" event values that mark the end of such a group of records.
 
-There are many instances where you want to look for "trigger" status values in a table (data frame) that mark the beginning of a sequence of records that need to be grouped together. Naturally, there are usually corresponding "trigger" values that mark the end of such a group of records. The obvious solution for automating the identification of such groups is to write a while or for loop that sequentially examines each record and uses `if-else` logic to generate a new column in the table that indicates the assignment of each record to an appropriate group. However, in many (but not all) cases such logic can instead be implemented using fast-running vectorized functions by creating a sequence of a few column-wise vectors that lead to generation of such a grouping column using simpler and faster basic operations.
+For example, we might have records of wind direction and be interested in identifying periods when the direction was generally toward the west. The beginning of such a period would be a record for which the direction is "west", but the direction in the previous record was something other than "west". Such a period of westerly wind direction would logically end when the direction again became something other than "west".
 
-Note that these techniques can be applied in Python as well, using numpy/pandas functions.
+The obvious solution for automating the identification of such groups of records is to write a `while` or `for` loop that sequentially examines each record and uses `if-else` logic to generate a new column in the table that indicates the assignment of each record to an appropriate group. However, in many (but not all) cases such logic can instead be implemented using fast-running vectorized functions by creating a sequence of a few column-wise vectors that lead to generation of such a grouping column using simpler and faster basic operations.
+
+(Note that these techniques can be applied in Python as well, using numpy/pandas functions, but examples in Python are not included in this post.)
 
 ```{r}
 suppressPackageStartupMessages({
@@ -27,7 +32,12 @@ suppressPackageStartupMessages({
 theme_set(theme_minimal())
 ```
 
-## The idea
+```{r,echo=FALSE}
+options( kableExtra.html.bsTable = TRUE )
+```
+
+
+# The idea
 
 If we have a timeline, or any real number line, we may be able to figure out when certain things happened, but it may be useful to lump records following those events together.
 
@@ -43,10 +53,18 @@ dta1 <- read.table( text=
  7  1
  8  0
 ",header=TRUE,as.is=TRUE)
-dta1
 ```
 
-Here we have some events at 1, 3, and 7.
+```{r,echo=FALSE}
+(   knitr::kable( dta1 )
+%>% kable_styling( bootstrap_options = "striped"
+                 , full_width = FALSE
+                 , position = "center"
+                 )
+)
+```
+
+Here we have some events at `X` "times" of 1, 3, and 7.
 
 ```{r,echo=FALSE}
 ggplot(dta1, aes( x = X, y = Start, xend = X ) ) +
@@ -93,7 +111,7 @@ ggplot(dta1, aes(x=X,y=G)) +
 
 The `G` column can be used in grouped calculations to identify each group of records.
 
-## Intervals
+# Intervals
 
 Now we look at a more involved extension of this idea: collapsing records that redundantly specify overlapping intervals.
 
@@ -105,7 +123,15 @@ B      2     6
 C      9     11
 D      14    17
 ",header=TRUE)
-dta2
+```
+
+```{r,echo=FALSE}
+(   knitr::kable( dta2 )
+%>% kable_styling( bootstrap_options = "striped"
+                 , full_width = FALSE
+                 , position = "center"
+                 )
+)
 ```
 
 As we see below, there are parts of the number line that are not identified by these `Start`/`End` pairs (red bars), and there are individual intervals shown by the black bars. Intervals `A` and `B` overlap, so the goal is to represent them by one black bar.
@@ -133,8 +159,17 @@ We start by sorting by beginning of interval (`Start`).
 dta2b <- (   dta2
          %>% arrange( Start )
          )
-dta2b
 ```
+
+```{r, echo=FALSE}
+(   knitr::kable( dta2b )
+%>% kable_styling( bootstrap_options = "striped"
+                 , full_width = FALSE
+                 , position = "center"
+                 )
+)
+```
+
 
 ```{r,echo=FALSE}
 dta2b$Label <- factor( as.character( dta2b$Label )
@@ -175,7 +210,15 @@ Next we notice that we can subtract the red `End` values from the yellow `Start`
 dta2c <- (   dta2b
          %>% mutate( hole = c( Inf, Start[-1]-End[-n()] ) )
          )
-dta2c
+```
+
+```{r,echo=FALSE}
+(   knitr::kable( dta2c )
+%>% kable_styling( bootstrap_options = "striped"
+                 , full_width = FALSE
+                 , position = "center"
+                 )
+)
 ```
 
 Next we identify events... which intervals have holes greater or equal to zero in front of them?
@@ -184,7 +227,15 @@ Next we identify events... which intervals have holes greater or equal to zero i
 dta2d <- (   dta2c
          %>% mutate( group_start = ( 0 <= hole ) )
          )
-dta2d
+```
+
+```{r,echo=FALSE}
+(   knitr::kable( dta2d )
+%>% kable_styling( bootstrap_options = "striped"
+                 , full_width = FALSE
+                 , position = "center"
+                 )
+)
 ```
 
 Now that we have events identified, we can use `cumsum` to identify records that belong together:
@@ -193,7 +244,15 @@ Now that we have events identified, we can use `cumsum` to identify records that
 dta2e <- (   dta2d
          %>% mutate( group = cumsum( group_start ) )
          )
-dta2e
+```
+
+```{r,echo=FALSE}
+(   knitr::kable( dta2e )
+%>% kable_styling( bootstrap_options = "striped"
+                 , full_width = FALSE
+                 , position = "center"
+                 )
+)
 ```
 
 With the `group` column defined, the minimum `Start` and the maximum `End` in each `group` value can be used to form a single interval record.
@@ -206,7 +265,15 @@ dta2f <- (   dta2e
                       )
          %>% ungroup()
          )
-dta2f
+```
+
+```{r,echo=FALSE}
+(   knitr::kable( dta2f )
+%>% kable_styling( bootstrap_options = "striped"
+                 , full_width = FALSE
+                 , position = "center"
+                 )
+)
 ```
 
 ```{r,echo=FALSE}
@@ -243,16 +310,26 @@ dta2g <- (   dta2
                       )
          %>% ungroup()
          )
-dta2g
+```
+
+```{r,echo=FALSE}
+(   knitr::kable( dta2g )
+%>% kable_styling( bootstrap_options = "striped"
+                 , full_width = FALSE
+                 , position = "center"
+                 )
+)
 ```
 
 
-## One day (max) separation
+# One day (max) separation
+
+Suppose you have intervals that are always defined using dates within one year, so technically December 31 does not actually overlap with January 1 of the following year. Depending on the nature of the data this may in fact be close enough, so you may want to define "overlap" as "within one day". Consider a sample data set:
 
 ```{r}
 library(dplyr)
 
-dta <- read.csv(text=
+dta3 <- read.csv(text=
 "id|start|end
 1|2015-08-01|2015-12-31
 1|2016-01-01|2016-12-31
@@ -265,39 +342,259 @@ dta <- read.csv(text=
 ,colClasses=c("numeric","Date","Date"))
 ```
 
+We can again compute hole size, and compare the hole size with 1 day instead of 0 days:
+
 ```{r}
-(   dta
-%>% arrange( id, start )
-%>% group_by( id )
-%>% mutate( hole = c( Inf
-                    , as.numeric( start[-1]-end[-n()]
-                                , units="days"
-                                )
-                    )
-          , gp = cumsum( 1 < hole )
-          )
-%>% ungroup
-# %>% group_by( id, gp )
-# %>% summarise( start = min( start )
-#              , end = max( end )
-#              )
+dta3a <- (   dta3
+         %>% arrange( id, start )
+         %>% group_by( id )
+         %>% mutate( hole = c( Inf
+                             , as.numeric( start[-1]-end[-n()]
+                                         , units="days"
+                                         )
+                             )
+                   , gp = cumsum( 1 < hole )
+                   )
+         %>% ungroup()
+         )
+```
+
+```{r,echo=FALSE}
+(   knitr::kable( dta3a )
+%>% kable_styling( bootstrap_options = "striped"
+                 , full_width = FALSE
+                 , position = "center"
+                 )
 )
 ```
 
+Take this same sequence of calculations, and performing the group-by we can identify the starting date and the ending date for each group.
+
 ```{r}
-(   dta
-%>% arrange( id, start )
-%>% group_by( id )
-%>% mutate( hole = c( Inf
-                    , as.numeric( start[-1]-end[-n()]
-                                , units="days"
-                                )
-                    )
-          , gp = cumsum( 1 < hole )
-          )
-%>% ungroup
-%>% group_by( id, gp )
-%>% summarise( start = min( start )
-             , end = max( end ))
+dta3b <- (   dta3
+         %>% arrange( id, start )
+         %>% group_by( id )
+         %>% mutate( hole = c( Inf
+                             , as.numeric( start[-1]-end[-n()]
+                                         , units="days"
+                                         )
+                             )
+                   , gp = cumsum( 1 < hole )
+                   )
+         %>% ungroup()
+         %>% group_by( id, gp )
+         %>% summarise( start = min( start )
+                      , end = max( end )
+                      )
+         )
+```
+
+```{r,echo=FALSE}
+(   knitr::kable( dta3b )
+%>% kable_styling( bootstrap_options = "striped"
+                 , full_width = FALSE
+                 , position = "center"
+                 )
 )
 ```
+
+# Wind Direction
+
+In a [question](https://stat.ethz.ch/pipermail/r-help/2020-May/467004.html) on the R-help mailing list, the following problem is posed:
+
+> [...] the wind direction is very
+> stable during these situations, and therefore I would like to start
+> from it. [...]
+> 
+> In the case of the example below reported, I know that the directions
+> of this particular automatic station must be only SW or WSW.
+> 
+> My biggest problem, [...] is to find the beginning and the end of
+> each event, when there is a change in the main direction.
+> Thinking about categorical data in general, is there a way to detect
+> periods when one particular category is more frequent?
+
+So the sample data provided is one day of wind data, with the intent to handle many days of data efficiently:
+
+```{r}
+first_day_POSIX <- as.POSIXct( "2020-02-19" )
+last_day_POSIX <- as.POSIXct( "2020-02-20" )
+mydf <- data.frame(
+    data_POSIX = seq( first_day_POSIX, last_day_POSIX, by="10 min" )
+  , main_dir = c( "WSW", "WSW", "SW", "SW", "W", "WSW", "WSW", "WSW", "W"
+                , "W", "SW", "WSW", "SSW", "S", "SW", "SW", "WSW", "WNW"
+                , "W", "WSW", "WSW", "SE", "SE", "SE", "NW", "NNE", "ENE"
+                , "SE", "NNW", "NW", "NW", "NW", "NW", "NW", "NW", "NE"
+                , "NW", "NW", "NW", "NW", "NW", "N", "WNW", "NW", "NNW"
+                , "NNW", "NW", "NW", "NW", "WNW", "ESE", "W", "WSW", "SW"
+                , "SW", "SW", "WSW", "SW", "S", "S", "SSW", "SW", "WSW"
+                , "WSW", "WSW", "WSW", "WSW", "WSW", "WSW", "SW", "WSW"
+                , "WSW", "WSW", "WSW", "SW", "SW", "WSW", "WSW", "WSW"
+                , "WSW", "WSW", "SW", "SW", "SW", "SW", "SW", "SW", "SW"
+                , "SW", "SW", "WSW", "WSW", "WSW", "WSW", "SW", "SW"
+                , "SW", "SW", "WSW", "SW", "SW", "SW", "SW", "SW", "WSW"
+                , "SW", "SW", "W", "WSW", "WSW", "SSW", "S", "WNW", "SW"
+                , "W", "WSW", "WSW", "SE", "SE", "SE", "NW", "NNE", "ENE"
+                , "SE", "NNW", "NW", "NW", "NW", "NW", "NW", "NW", "NE"
+                , "NW", "NW", "NW", "NW", "NW", "N", "WNW", "NW", "NNW"
+                , "NNW", "NW", "NW", "NW"
+                )
+  , max_speed = c( 4.60, 4.60, 3.40, 3.10, 4.80, 4.20, 4.10, 4.50, 4.70
+                 , 4.30, 2.40, 2.30, 2.20, 2.10, 2.90, 2.80, 1.80, 2.70
+                 , 4.30, 3.30, 2.30, 2.30, 3.20, 3.20, 2.90, 2.30, 1.50
+                 , 1.80, 2.90, 2.40, 1.80, 2.40, 2.30, 2.60, 1.80, 2.30
+                 , 1.90, 2.20, 2.80, 2.40, 1.00, 1.10, 1.60, 2.30, 2.50
+                 , 3.30, 3.40, 3.20, 4.50, 3.90, 3.10, 2.40, 6.00, 7.80
+                 , 6.30, 7.80, 8.10, 6.10, 7.40, 9.50, 8.90, 9.10, 10.10
+                 , 10.50, 11.10, 10.10, 10.90, 11.30, 13.40, 13.50, 12.80
+                 , 11.50, 13.10, 13.50, 11.10, 10.50, 8.50, 10.10, 10.70
+                 , 13.60, 11.90, 14.90, 10.90, 10.90, 12.80, 12.10, 9.10
+                 , 8.30, 8.80, 7.40, 8.40, 10.30, 10.00, 7.00, 8.50, 8.40
+                 , 8.60, 6.70, 7.30, 6.20, 5.90, 5.90, 5.10, 5.80, 5.60
+                 , 6.50, 6.60, 11.70, 11.30, 8.70, 7.10, 6.90, 4.30
+                 , 3.80, 4.30, 3.30, 2.30, 2.30, 3.20, 3.20, 2.90, 2.30
+                 , 1.50, 1.80, 2.90, 2.40, 1.80, 2.40, 2.30, 2.60, 1.80
+                 , 2.30, 1.90, 2.20, 2.80, 2.40, 1.00, 1.10, 1.60, 2.30
+                 , 2.50, 3.30, 3.40, 3.20, 4.50
+                 )
+)
+```
+
+We begin with the base-R approach. Afterward this we will show the equivalent `dplyr` syntax.
+
+First To identify candidate records to be considered as "foehn" conditions, and a first stab at the groups of records of interest:
+
+```{r}
+mydf$foehn1a <- mydf$main_dir %in% c( "WSW", "SW" )
+mydf$foehn1b <- cumsum( !mydf$foehn1a )
+```
+
+Having the ability to consider the groups separately, we identify sequences of records of more than ten records (one hour, as an example minimum period of time):
+
+```{r}
+mydf$foehn1c <- ave( rep( 1, nrow( mydf ) )
+                   , mydf$foehn1b
+                   , FUN=function(v) 10 < length( v )
+                   )
+```
+
+(If you are not familiar with the `ave` function, it calls the given function with subsets from the first argument corresponding to distinct values in the second argument (the grouping variable), and combines the results as a vector just as long as the original input data. The function should return either a scalar (which will be extended as necessary), or a vector the same length as the input vector.)
+
+With the groups of similar-direction records that are long enough, we can re-compute events that only apply to the beginning of long intervals:
+
+```{r}
+mydf$foehn1d <- 0 < diff( c( 0, mydf$foehn1c ) )
+```
+
+Now we can generate distinct incrementing groups of records, and use the previously determined flag values for the long records to zero out the grouping flags for records that do not apply to the relevant "foehn" period of time:
+
+```{r}
+mydf$foehn1e <- with( mydf
+                    , ifelse( foehn1c
+                            , cumsum( foehn1d )
+                            , 0
+                            )
+                    )
+```
+
+```{r,echo=FALSE}
+(   knitr::kable( mydf )
+%>% kable_styling( bootstrap_options = "striped"
+                 , full_width = FALSE
+                 , position = "center"
+                 )
+)
+```
+
+And if all we want is to identify start and end periods:
+
+```{r}
+mydf1 <- mydf[ 0 != mydf$foehn1e, c( "data_POSIX", "foehn1e") ]
+mydf2 <- do.call( rbind
+                , lapply( split( mydf1
+                               , mydf1$foehn1e
+                               )
+                        , function( DF ) {
+                            data.frame( foehn1e = DF$foehn1e[ 1 ]
+                                      , Start = min( DF$data_POSIX )
+                                      , End = max( DF$data_POSIX )
+                                      )
+                          }
+                        )
+                )
+```
+
+```{r,echo=FALSE}
+(   knitr::kable( mydf2 )
+%>% kable_styling( bootstrap_options = "striped"
+                 , full_width = FALSE
+                 , position = "center"
+                 )
+)
+```
+
+Alternatively, the above steps can be encoded using `dplyr`:
+
+```{r}
+mydf3alt <- (   mydf
+            %>% mutate( foehn1a = main_dir %in% c( "WSW", "SW" )
+                      , foehn1b = cumsum( !foehn1a )
+                      )
+            %>% group_by( foehn1b )
+            %>% mutate( foehn1c = 10 < n() )
+            %>% ungroup()
+            %>% mutate( foehn1d = 0 < diff( c( 0, foehn1c ) )
+                      , foehn1e = ifelse( foehn1c
+                                        , cumsum( foehn1d )
+                                        , 0
+                                        )
+                      )
+            )
+```
+
+Just to confirm that this method obtains the same result as the base R method:
+
+```{r}
+all( mydf == mydf3alt )
+```
+
+And the collapsed form is:
+
+```{r}
+mydf3alt2 <- (   mydf3alt
+             %>% filter( 0 < foehn1e )
+             %>% group_by( foehn1e )
+             %>% summarise( Start = min( data_POSIX )
+                          , End = max( data_POSIX )
+                          )
+             )
+```
+
+```{r,echo=FALSE}
+(   knitr::kable( mydf3alt2 )
+%>% kable_styling( bootstrap_options = "striped"
+                 , full_width = FALSE
+                 , position = "center"
+                 )
+)
+```
+
+Just to confirm the same final results:
+
+```{r}
+all( mydf2 == mydf3alt2 )
+```
+
+:thumbsup: 
+
+# Fini
+
+In summary:
+
+- The `diff` function is useful in finding "events" to begin or end groups of record classifications.
+- Events can also be identified using logical tests of information in records.
+- The `cumsum` function is useful in converting events into grouping variables.
+- These grouping columns can be used to divide up the records into groups and collapse them into summary values such as start or end times, or aggregate measures relevant to those records.
+- These techniques can efficiently scale up to very large data sets.
+- There are some forms of event specifications that cannot be identified this way, and in such cases a for loop in R or Rcpp may be needed. In general, when continuous values are accumulated differently according to events, and subsequent events are defined in terms of those continuous accumulations, those simulations are in general not amenable to these `cumsum` and `diff` tricks.
+
