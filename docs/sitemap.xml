@@ -1,89 +1,56 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
-  
   <url>
-    <loc>/blog/</loc>
-    <lastmod>2020-05-25T12:47:53-07:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>/blog/terms/</loc>
-    <lastmod>2020-05-25T12:47:53-07:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>/blog/categories/</loc>
+    <loc>https://jdnewmil.github.io/blog/tag/beginners/</loc>
+    <lastmod>2021-10-03T14:16:40-07:00</lastmod>
+  </url><url>
+    <loc>https://jdnewmil.github.io/blog/categories/</loc>
+    <lastmod>2021-10-03T14:16:40-07:00</lastmod>
+  </url><url>
+    <loc>https://jdnewmil.github.io/blog/tag/data-analysis/</loc>
+    <lastmod>2021-10-03T14:16:40-07:00</lastmod>
+  </url><url>
+    <loc>https://jdnewmil.github.io/blog/tag/functions/</loc>
+    <lastmod>2021-10-03T14:16:40-07:00</lastmod>
+  </url><url>
+    <loc>https://jdnewmil.github.io/blog/post/functions-talk/</loc>
+    <lastmod>2021-10-03T14:16:40-07:00</lastmod>
+  </url><url>
+    <loc>https://jdnewmil.github.io/blog/</loc>
+    <lastmod>2021-10-03T14:16:40-07:00</lastmod>
+  </url><url>
+    <loc>https://jdnewmil.github.io/blog/post/</loc>
+    <lastmod>2021-10-03T14:16:40-07:00</lastmod>
+  </url><url>
+    <loc>https://jdnewmil.github.io/blog/category/r/</loc>
+    <lastmod>2021-10-03T14:16:40-07:00</lastmod>
+  </url><url>
+    <loc>https://jdnewmil.github.io/blog/tags/</loc>
+    <lastmod>2021-10-03T14:16:40-07:00</lastmod>
+  </url><url>
+    <loc>https://jdnewmil.github.io/blog/post/cumsum-and-diff-tricks/</loc>
     <lastmod>2020-05-24T00:00:00+00:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>/blog/post/cumsum-and-diff-tricks/</loc>
-    <lastmod>2020-05-24T00:00:00+00:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>/blog/tag/data-analysis/</loc>
-    <lastmod>2020-05-24T00:00:00+00:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>/blog/post/</loc>
-    <lastmod>2020-05-24T00:00:00+00:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>/blog/category/r/</loc>
-    <lastmod>2020-05-24T00:00:00+00:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>/blog/tags/</loc>
-    <lastmod>2020-05-24T00:00:00+00:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>/blog/tag/development/</loc>
+  </url><url>
+    <loc>https://jdnewmil.github.io/blog/tag/development/</loc>
     <lastmod>2020-05-17T00:00:00+00:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>/blog/post/inaugural-post/</loc>
+  </url><url>
+    <loc>https://jdnewmil.github.io/blog/post/inaugural-post/</loc>
     <lastmod>2020-05-17T00:00:00+00:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>/blog/about/</loc>
+  </url><url>
+    <loc>https://jdnewmil.github.io/blog/about/</loc>
     <lastmod>2020-05-16T15:48:40-07:00</lastmod>
+  </url><url>
+    <loc>https://jdnewmil.github.io/blog/authors/</loc>
+  </url><url>
+    <loc>https://jdnewmil.github.io/blog/courses/</loc>
+  </url><url>
+    <loc>https://jdnewmil.github.io/blog/author/jeff-newmiller/</loc>
+  </url><url>
+    <loc>https://jdnewmil.github.io/blog/publication_types/</loc>
+  </url><url>
+    <loc>https://jdnewmil.github.io/blog/publication/</loc>
+  </url><url>
+    <loc>https://jdnewmil.github.io/blog/talk/</loc>
   </url>
-  
-  <url>
-    <loc>/blog/privacy/</loc>
-    <lastmod>2018-06-28T00:00:00+01:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>/blog/authors/</loc>
-  </url>
-  
-  <url>
-    <loc>/blog/courses/</loc>
-  </url>
-  
-  <url>
-    <loc>/blog/author/jeff-newmiller/</loc>
-  </url>
-  
-  <url>
-    <loc>/blog/publication_types/</loc>
-  </url>
-  
-  <url>
-    <loc>/blog/publication/</loc>
-  </url>
-  
-  <url>
-    <loc>/blog/talk/</loc>
-  </url>
-  
 </urlset>

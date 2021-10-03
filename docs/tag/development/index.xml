@@ -2,21 +2,21 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>development | Musings</title>
-    <link>/blog/tag/development/</link>
-      <atom:link href="/blog/tag/development/index.xml" rel="self" type="application/rss+xml" />
+    <link>https://jdnewmil.github.io/blog/tag/development/</link>
+      <atom:link href="https://jdnewmil.github.io/blog/tag/development/index.xml" rel="self" type="application/rss+xml" />
     <description>development</description>
     <generator>Source Themes Academic (https://sourcethemes.com/academic/)</generator><language>en-us</language><lastBuildDate>Sun, 17 May 2020 00:00:00 +0000</lastBuildDate>
     <image>
-      <url>/blog/images/icon_hu7d2da9851e097a17d580bc95779082b2_1602_512x512_fill_lanczos_center_2.png</url>
+      <url>https://jdnewmil.github.io/blog/images/icon_hu7d2da9851e097a17d580bc95779082b2_1602_512x512_fill_lanczos_center_3.png</url>
       <title>development</title>
-      <link>/blog/tag/development/</link>
+      <link>https://jdnewmil.github.io/blog/tag/development/</link>
     </image>
     
     <item>
       <title>Inaugural Post</title>
-      <link>/blog/post/inaugural-post/</link>
+      <link>https://jdnewmil.github.io/blog/post/inaugural-post/</link>
       <pubDate>Sun, 17 May 2020 00:00:00 +0000</pubDate>
-      <guid>/blog/post/inaugural-post/</guid>
+      <guid>https://jdnewmil.github.io/blog/post/inaugural-post/</guid>
       <description>
 
 

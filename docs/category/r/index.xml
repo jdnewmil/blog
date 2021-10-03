@@ -2,24 +2,38 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>R | Musings</title>
-    <link>/blog/category/r/</link>
-      <atom:link href="/blog/category/r/index.xml" rel="self" type="application/rss+xml" />
+    <link>https://jdnewmil.github.io/blog/category/r/</link>
+      <atom:link href="https://jdnewmil.github.io/blog/category/r/index.xml" rel="self" type="application/rss+xml" />
     <description>R</description>
-    <generator>Source Themes Academic (https://sourcethemes.com/academic/)</generator><language>en-us</language><lastBuildDate>Sun, 24 May 2020 00:00:00 +0000</lastBuildDate>
+    <generator>Source Themes Academic (https://sourcethemes.com/academic/)</generator><language>en-us</language><lastBuildDate>Sun, 03 Oct 2021 00:00:00 +0000</lastBuildDate>
     <image>
-      <url>/blog/images/icon_hu7d2da9851e097a17d580bc95779082b2_1602_512x512_fill_lanczos_center_2.png</url>
+      <url>https://jdnewmil.github.io/blog/images/icon_hu7d2da9851e097a17d580bc95779082b2_1602_512x512_fill_lanczos_center_3.png</url>
       <title>R</title>
-      <link>/blog/category/r/</link>
+      <link>https://jdnewmil.github.io/blog/category/r/</link>
     </image>
     
     <item>
+      <title>Functions Talk</title>
+      <link>https://jdnewmil.github.io/blog/post/functions-talk/</link>
+      <pubDate>Sun, 03 Oct 2021 00:00:00 +0000</pubDate>
+      <guid>https://jdnewmil.github.io/blog/post/functions-talk/</guid>
+      <description>&lt;p&gt;The 
+&lt;a href=&#34;https://www.meetup.com/r-enthusiasts/&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;East Bay R Enthusiasts&lt;/a&gt; is trying to rebound from the pandemic (after pausing for 18 months) by setting up some meetings online, and I put together some thoughts on the questions &amp;ldquo;how do I make a function&amp;rdquo; and &amp;ldquo;what should be in a function&amp;rdquo;, targeted at beginner-to-intermediate R users in a 
+&lt;a href=&#34;https://jdnewmil.github.io/FunctionsTalk/FunctionsTalk.html&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;presentation&lt;/a&gt;. The presentation seemed to go alright for the few that attended&amp;hellip; hopefully attendance will increase after we get into a rhythm again.&lt;/p&gt;
+&lt;p&gt;Many beginners in R focus on using functions that are provided in the base R distribution and/or in contributed packages, but they often find themselves copying and pasting snippets into long scripts that are very repetitive with tiny differences between chunks of code. Wrapping those snippets into functions reduces the repetition and lets the user think in terms of what each block was intended to accomplish. A script composed of a few dozen clearly-named function calls that each accomplish a page-worth of statements is easier to read and think about and extend than a script with hundreds of lines.&lt;/p&gt;
+&lt;p&gt;To this end, the presentation discusses the mechanics of converting a few blocks of code into functions, and ends up discussing input, output, and analysis as distinctly different categories of functions to keep in mind as one converts script code into functions. It ends with comparing a data flow diagram of a sample analysis and two versions of R code that correspond to that diagram.&lt;/p&gt;
+&lt;p&gt;There are many other things that can be said about functions, and in a future extension of this discussion I intend to discuss function mapping and &amp;ldquo;apply&amp;rdquo;-type functions as tools for organizing repeated operations, as well as some trade-offs between performance and memory use.&lt;/p&gt;
+</description>
+    </item>
+    
+    <item>
       <title>Cumsum and Diff Tricks</title>
-      <link>/blog/post/cumsum-and-diff-tricks/</link>
+      <link>https://jdnewmil.github.io/blog/post/cumsum-and-diff-tricks/</link>
       <pubDate>Sun, 24 May 2020 00:00:00 +0000</pubDate>
-      <guid>/blog/post/cumsum-and-diff-tricks/</guid>
+      <guid>https://jdnewmil.github.io/blog/post/cumsum-and-diff-tricks/</guid>
       <description>
-&lt;script src=&#34;/blog/blog/rmarkdown-libs/kePrint/kePrint.js&#34;&gt;&lt;/script&gt;
-&lt;link href=&#34;/blog/blog/rmarkdown-libs/bsTable/bootstrapTable.min.css&#34; rel=&#34;stylesheet&#34; /&gt;
+&lt;script src=&#34;https://jdnewmil.github.io/blog/blog/rmarkdown-libs/kePrint/kePrint.js&#34;&gt;&lt;/script&gt;
+&lt;link href=&#34;https://jdnewmil.github.io/blog/blog/rmarkdown-libs/bsTable/bootstrapTable.min.css&#34; rel=&#34;stylesheet&#34; /&gt;
 
 &lt;div id=&#34;TOC&#34;&gt;
 &lt;ul&gt;
@@ -134,7 +148,7 @@ Start
 &lt;/tbody&gt;
 &lt;/table&gt;
 &lt;p&gt;Here we have some events at &lt;code&gt;X&lt;/code&gt; “times” of 1, 3, and 7.&lt;/p&gt;
-&lt;p&gt;&lt;img src=&#34;/blog/blog/post/2020-05-24-cumsum-and-diff-tricks_files/figure-html/unnamed-chunk-5-1.png&#34; width=&#34;672&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://jdnewmil.github.io/blog/blog/post/2020-05-24-cumsum-and-diff-tricks_files/figure-html/unnamed-chunk-5-1.png&#34; width=&#34;672&#34; /&gt;&lt;/p&gt;
 &lt;p&gt;But we would like to group the records together:&lt;/p&gt;
 &lt;table&gt;
 &lt;thead&gt;
@@ -216,7 +230,7 @@ Start
 &lt;/table&gt;
 &lt;p&gt;The trick to marking these records as belonging together is to use &lt;code&gt;cumsum&lt;/code&gt; on the &lt;code&gt;Start&lt;/code&gt; events&lt;/p&gt;
 &lt;pre class=&#34;r&#34;&gt;&lt;code&gt;dta1$G &amp;lt;- cumsum( dta1$Start )&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img src=&#34;/blog/blog/post/2020-05-24-cumsum-and-diff-tricks_files/figure-html/unnamed-chunk-8-1.png&#34; width=&#34;672&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://jdnewmil.github.io/blog/blog/post/2020-05-24-cumsum-and-diff-tricks_files/figure-html/unnamed-chunk-8-1.png&#34; width=&#34;672&#34; /&gt;&lt;/p&gt;
 &lt;table&gt;
 &lt;thead&gt;
 &lt;tr&gt;
@@ -397,7 +411,7 @@ D
 &lt;/tbody&gt;
 &lt;/table&gt;
 &lt;p&gt;As we see below, there are parts of the number line that are not identified by these &lt;code&gt;Start&lt;/code&gt;/&lt;code&gt;End&lt;/code&gt; pairs (red bars), and there are individual intervals shown by the black bars. Intervals &lt;code&gt;A&lt;/code&gt; and &lt;code&gt;B&lt;/code&gt; overlap, so the goal is to represent them by one black bar.&lt;/p&gt;
-&lt;p&gt;&lt;img src=&#34;/blog/blog/post/2020-05-24-cumsum-and-diff-tricks_files/figure-html/unnamed-chunk-12-1.png&#34; width=&#34;672&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://jdnewmil.github.io/blog/blog/post/2020-05-24-cumsum-and-diff-tricks_files/figure-html/unnamed-chunk-12-1.png&#34; width=&#34;672&#34; /&gt;&lt;/p&gt;
 &lt;p&gt;We start by sorting by beginning of interval (&lt;code&gt;Start&lt;/code&gt;).&lt;/p&gt;
 &lt;table class=&#34;table table-striped&#34; style=&#34;width: auto !important; margin-left: auto; margin-right: auto;&#34;&gt;
 &lt;thead&gt;
@@ -460,7 +474,7 @@ D
 &lt;/tr&gt;
 &lt;/tbody&gt;
 &lt;/table&gt;
-&lt;p&gt;&lt;img src=&#34;/blog/blog/post/2020-05-24-cumsum-and-diff-tricks_files/figure-html/unnamed-chunk-15-1.png&#34; width=&#34;672&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://jdnewmil.github.io/blog/blog/post/2020-05-24-cumsum-and-diff-tricks_files/figure-html/unnamed-chunk-15-1.png&#34; width=&#34;672&#34; /&gt;&lt;/p&gt;
 &lt;p&gt;Next we notice that we can subtract the red &lt;code&gt;End&lt;/code&gt; values from the yellow &lt;code&gt;Start&lt;/code&gt; values to figure out how big the “hole” is preceding each &lt;code&gt;Start&lt;/code&gt; value. Notice that the hole before the first interval is infinitely large.&lt;/p&gt;
 &lt;table class=&#34;table&#34; style=&#34;width: auto !important; margin-left: auto; margin-right: auto;&#34;&gt;
 &lt;thead&gt;
@@ -865,7 +879,7 @@ End
 &lt;/tr&gt;
 &lt;/tbody&gt;
 &lt;/table&gt;
-&lt;p&gt;&lt;img src=&#34;/blog/blog/post/2020-05-24-cumsum-and-diff-tricks_files/figure-html/unnamed-chunk-25-1.png&#34; width=&#34;672&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://jdnewmil.github.io/blog/blog/post/2020-05-24-cumsum-and-diff-tricks_files/figure-html/unnamed-chunk-25-1.png&#34; width=&#34;672&#34; /&gt;&lt;/p&gt;
 &lt;p&gt;With &lt;code&gt;dplyr&lt;/code&gt; this series of operations can be piped together instead of built incrementally as we did above to show the intermediate results:&lt;/p&gt;
 &lt;pre class=&#34;r&#34;&gt;&lt;code&gt;dta2g &amp;lt;- (   dta2
          %&amp;gt;% arrange( Start )
@@ -5175,9 +5189,9 @@ End
     
     <item>
       <title>Inaugural Post</title>
-      <link>/blog/post/inaugural-post/</link>
+      <link>https://jdnewmil.github.io/blog/post/inaugural-post/</link>
       <pubDate>Sun, 17 May 2020 00:00:00 +0000</pubDate>
-      <guid>/blog/post/inaugural-post/</guid>
+      <guid>https://jdnewmil.github.io/blog/post/inaugural-post/</guid>
       <description>
 
 

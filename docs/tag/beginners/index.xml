@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>beginners | Musings</title>
+    <link>https://jdnewmil.github.io/blog/tag/beginners/</link>
+      <atom:link href="https://jdnewmil.github.io/blog/tag/beginners/index.xml" rel="self" type="application/rss+xml" />
+    <description>beginners</description>
+    <generator>Source Themes Academic (https://sourcethemes.com/academic/)</generator><language>en-us</language><lastBuildDate>Sun, 03 Oct 2021 00:00:00 +0000</lastBuildDate>
+    <image>
+      <url>https://jdnewmil.github.io/blog/images/icon_hu7d2da9851e097a17d580bc95779082b2_1602_512x512_fill_lanczos_center_3.png</url>
+      <title>beginners</title>
+      <link>https://jdnewmil.github.io/blog/tag/beginners/</link>
+    </image>
+    
+    <item>
+      <title>Functions Talk</title>
+      <link>https://jdnewmil.github.io/blog/post/functions-talk/</link>
+      <pubDate>Sun, 03 Oct 2021 00:00:00 +0000</pubDate>
+      <guid>https://jdnewmil.github.io/blog/post/functions-talk/</guid>
+      <description>&lt;p&gt;The 
+&lt;a href=&#34;https://www.meetup.com/r-enthusiasts/&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;East Bay R Enthusiasts&lt;/a&gt; is trying to rebound from the pandemic (after pausing for 18 months) by setting up some meetings online, and I put together some thoughts on the questions &amp;ldquo;how do I make a function&amp;rdquo; and &amp;ldquo;what should be in a function&amp;rdquo;, targeted at beginner-to-intermediate R users in a 
+&lt;a href=&#34;https://jdnewmil.github.io/FunctionsTalk/FunctionsTalk.html&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;presentation&lt;/a&gt;. The presentation seemed to go alright for the few that attended&amp;hellip; hopefully attendance will increase after we get into a rhythm again.&lt;/p&gt;
+&lt;p&gt;Many beginners in R focus on using functions that are provided in the base R distribution and/or in contributed packages, but they often find themselves copying and pasting snippets into long scripts that are very repetitive with tiny differences between chunks of code. Wrapping those snippets into functions reduces the repetition and lets the user think in terms of what each block was intended to accomplish. A script composed of a few dozen clearly-named function calls that each accomplish a page-worth of statements is easier to read and think about and extend than a script with hundreds of lines.&lt;/p&gt;
+&lt;p&gt;To this end, the presentation discusses the mechanics of converting a few blocks of code into functions, and ends up discussing input, output, and analysis as distinctly different categories of functions to keep in mind as one converts script code into functions. It ends with comparing a data flow diagram of a sample analysis and two versions of R code that correspond to that diagram.&lt;/p&gt;
+&lt;p&gt;There are many other things that can be said about functions, and in a future extension of this discussion I intend to discuss function mapping and &amp;ldquo;apply&amp;rdquo;-type functions as tools for organizing repeated operations, as well as some trade-offs between performance and memory use.&lt;/p&gt;
+</description>
+    </item>
+    
+  </channel>
+</rss>

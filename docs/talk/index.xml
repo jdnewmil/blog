@@ -2,14 +2,14 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Recent &amp; Upcoming Talks | Musings</title>
-    <link>/blog/talk/</link>
-      <atom:link href="/blog/talk/index.xml" rel="self" type="application/rss+xml" />
+    <link>https://jdnewmil.github.io/blog/talk/</link>
+      <atom:link href="https://jdnewmil.github.io/blog/talk/index.xml" rel="self" type="application/rss+xml" />
     <description>Recent &amp; Upcoming Talks</description>
     <generator>Source Themes Academic (https://sourcethemes.com/academic/)</generator><language>en-us</language>
     <image>
-      <url>/blog/images/icon_hu7d2da9851e097a17d580bc95779082b2_1602_512x512_fill_lanczos_center_2.png</url>
+      <url>https://jdnewmil.github.io/blog/images/icon_hu7d2da9851e097a17d580bc95779082b2_1602_512x512_fill_lanczos_center_3.png</url>
       <title>Recent &amp; Upcoming Talks</title>
-      <link>/blog/talk/</link>
+      <link>https://jdnewmil.github.io/blog/talk/</link>
     </image>
     
   </channel>

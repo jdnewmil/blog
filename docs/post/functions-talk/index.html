@@ -27,10 +27,10 @@
   
     
   
-  <meta name="description" content="Random thoughts, mostly on data analysis with R and Python.">
+  <meta name="description" content="I gave an introductory talk on making R functions">
 
   
-  <link rel="alternate" hreflang="en-us" href="https://jdnewmil.github.io/blog/authors/">
+  <link rel="alternate" hreflang="en-us" href="https://jdnewmil.github.io/blog/post/functions-talk/">
 
   
 
@@ -210,14 +210,12 @@
   
 
   
-  <link rel="alternate" href="/blog/authors/index.xml" type="application/rss+xml" title="Musings">
-  
 
   <link rel="manifest" href="/blog/index.webmanifest">
   <link rel="icon" type="image/png" href="/blog/images/icon_hu7d2da9851e097a17d580bc95779082b2_1602_32x32_fill_lanczos_center_3.png">
   <link rel="apple-touch-icon" type="image/png" href="/blog/images/icon_hu7d2da9851e097a17d580bc95779082b2_1602_192x192_fill_lanczos_center_3.png">
 
-  <link rel="canonical" href="https://jdnewmil.github.io/blog/authors/">
+  <link rel="canonical" href="https://jdnewmil.github.io/blog/post/functions-talk/">
 
   
   
@@ -233,18 +231,63 @@
   <meta property="twitter:card" content="summary">
   
   <meta property="og:site_name" content="Musings">
-  <meta property="og:url" content="https://jdnewmil.github.io/blog/authors/">
-  <meta property="og:title" content="Authors | Musings">
-  <meta property="og:description" content="Random thoughts, mostly on data analysis with R and Python."><meta property="og:image" content="https://jdnewmil.github.io/blog/images/icon_hu7d2da9851e097a17d580bc95779082b2_1602_512x512_fill_lanczos_center_3.png">
+  <meta property="og:url" content="https://jdnewmil.github.io/blog/post/functions-talk/">
+  <meta property="og:title" content="Functions Talk | Musings">
+  <meta property="og:description" content="I gave an introductory talk on making R functions"><meta property="og:image" content="https://jdnewmil.github.io/blog/images/icon_hu7d2da9851e097a17d580bc95779082b2_1602_512x512_fill_lanczos_center_3.png">
   <meta property="twitter:image" content="https://jdnewmil.github.io/blog/images/icon_hu7d2da9851e097a17d580bc95779082b2_1602_512x512_fill_lanczos_center_3.png"><meta property="og:locale" content="en-us">
   
     
+      <meta property="article:published_time" content="2021-10-03T00:00:00&#43;00:00">
+    
+    <meta property="article:modified_time" content="2021-10-03T14:16:40-07:00">
   
 
   
 
 
+    
 
+
+
+
+
+
+  
+
+
+
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "mainEntityOfPage": {
+    "@type": "WebPage",
+    "@id": "https://jdnewmil.github.io/blog/post/functions-talk/"
+  },
+  "headline": "Functions Talk",
+  
+  "datePublished": "2021-10-03T00:00:00Z",
+  "dateModified": "2021-10-03T14:16:40-07:00",
+  
+  "author": {
+    "@type": "Person",
+    "name": "Jeff Newmiller"
+  },
+  
+  "publisher": {
+    "@type": "Organization",
+    "name": "Musings",
+    "logo": {
+      "@type": "ImageObject",
+      "url": "https://jdnewmil.github.io/blog/images/icon_hu7d2da9851e097a17d580bc95779082b2_1602_192x192_fill_lanczos_center_3.png"
+    }
+  },
+  "description": "I gave an introductory talk on making R functions"
+}
+</script>
+
+  
 
   
 
@@ -252,10 +295,13 @@
   
 
 
+  
 
 
 
-  <title>Authors | Musings</title>
+
+
+  <title>Functions Talk | Musings</title>
 
 </head>
 
@@ -429,52 +475,231 @@
 </nav>
 
 
-  
-
-
-
-
-
-
-
-
-
-
-
-
-
+  <article class="article">
 
   
 
+
+
+
+
+
+
+
+
+
+
+
+  
+
   
   
+  
+<div class="article-container pt-3">
+  <h1>Functions Talk</h1>
+
+  
+
   
     
-  
-<div class="universal-wrapper pt-3">
-  <h1>Authors</h1>
+
+
+<div class="article-metadata">
 
   
-
-  
-</div>
-
-
-
-<div class="universal-wrapper">
   
 
-  <ul>
+  
+  <span class="article-date">
     
     
       
-      <li><a href="https://jdnewmil.github.io/blog/author/jeff-newmiller/">Jeff Newmiller</a></li>
+          Last updated on
+      
     
-  </ul>
+    Oct 3, 2021
+  </span>
+  
 
   
 
+  
+  <span class="middot-divider"></span>
+  <span class="article-reading-time">
+    2 min read
+  </span>
+  
+
+  
+  
+  
+
+  
+  
+  <span class="middot-divider"></span>
+  <span class="article-categories">
+    <i class="fas fa-folder mr-1"></i><a href="/blog/category/r/">R</a></span>
+  
+
 </div>
+
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+</div>
+
+
+
+  <div class="article-container">
+
+    <div class="article-style">
+      <p>The 
+<a href="https://www.meetup.com/r-enthusiasts/" target="_blank" rel="noopener">East Bay R Enthusiasts</a> is trying to rebound from the pandemic (after pausing for 18 months) by setting up some meetings online, and I put together some thoughts on the questions &ldquo;how do I make a function&rdquo; and &ldquo;what should be in a function&rdquo;, targeted at beginner-to-intermediate R users in a 
+<a href="https://jdnewmil.github.io/FunctionsTalk/FunctionsTalk.html" target="_blank" rel="noopener">presentation</a>. The presentation seemed to go alright for the few that attended&hellip; hopefully attendance will increase after we get into a rhythm again.</p>
+<p>Many beginners in R focus on using functions that are provided in the base R distribution and/or in contributed packages, but they often find themselves copying and pasting snippets into long scripts that are very repetitive with tiny differences between chunks of code. Wrapping those snippets into functions reduces the repetition and lets the user think in terms of what each block was intended to accomplish. A script composed of a few dozen clearly-named function calls that each accomplish a page-worth of statements is easier to read and think about and extend than a script with hundreds of lines.</p>
+<p>To this end, the presentation discusses the mechanics of converting a few blocks of code into functions, and ends up discussing input, output, and analysis as distinctly different categories of functions to keep in mind as one converts script code into functions. It ends with comparing a data flow diagram of a sample analysis and two versions of R code that correspond to that diagram.</p>
+<p>There are many other things that can be said about functions, and in a future extension of this discussion I intend to discuss function mapping and &ldquo;apply&rdquo;-type functions as tools for organizing repeated operations, as well as some trade-offs between performance and memory use.</p>
+
+    </div>
+
+    
+
+
+
+
+
+<div class="article-tags">
+  
+  <a class="badge badge-light" href="/blog/tag/data-analysis/">data analysis</a>
+  
+  <a class="badge badge-light" href="/blog/tag/beginners/">beginners</a>
+  
+  <a class="badge badge-light" href="/blog/tag/functions/">functions</a>
+  
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+
+
+
+
+
+  
+    
+    
+    
+      
+    
+    
+    
+    <div class="media author-card content-widget-hr">
+      
+        
+        <img class="avatar mr-3 avatar-circle" src="/blog/author/jeff-newmiller/avatar_hu52a603635ecebd45650b162dadabb4e5_12861_270x270_fill_q90_lanczos_center.jpg" alt="Jeff Newmiller">
+      
+
+      <div class="media-body">
+        <h5 class="card-title"><a href="https://jdnewmil.github.io/blog/">Jeff Newmiller</a></h5>
+        <h6 class="card-subtitle">Principal Engineer</h6>
+        <p class="card-text">Solar engineer and data scientist.</p>
+        <ul class="network-icon" aria-hidden="true">
+  
+    
+    
+    
+      
+    
+    
+    
+    
+    
+      
+    
+    <li>
+      <a href="/blog/#contact" >
+        <i class="fas fa-envelope"></i>
+      </a>
+    </li>
+  
+    
+    
+    
+      
+    
+    
+    
+    
+    
+      
+    
+    <li>
+      <a href="https://github.com/jdnewmil" target="_blank" rel="noopener">
+        <i class="fab fa-github"></i>
+      </a>
+    </li>
+  
+</ul>
+
+      </div>
+    </div>
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <div class="article-widget content-widget-hr">
+    <h3>Related</h3>
+    <ul>
+      
+      <li><a href="/blog/post/cumsum-and-diff-tricks/">Cumsum and Diff Tricks</a></li>
+      
+      <li><a href="/blog/post/inaugural-post/">Inaugural Post</a></li>
+      
+    </ul>
+  </div>
+  
+
+
+
+  </div>
+</article>
 
       
 
